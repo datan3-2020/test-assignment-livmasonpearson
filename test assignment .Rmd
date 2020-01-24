@@ -26,11 +26,10 @@ First, we need to read the data into R. For this assignment, I ask you to use da
 
 
 ```{r}
-library(tidyverse)
 # This attaches the tidyverse package. If you get an error here you need to install the package first. 
-getwd()
-data <- read_tsv("/Users/LIV/Desktop/i_youth.tab")
 # You need to add between the quotation marks a full path to the required file on your computer.
+library(tidyverse)
+data <- read_tsv("/Users/LIV/Desktop/i_youth.tab")
 ```
 
 ## Tabulate variables (10 points)
@@ -86,10 +85,6 @@ Create a statistical graph (only one, but it can be faceted) illustrating your r
 # add your code here
 table.gender <- tapply(data$socialmedia, data$gender, mean, na.rm=TRUE)
 table.age <- tapply(data$socialmedia, data$i_age_dv, mean, na.rm=TRUE)
-barplot(table.gender,
-        ylab = "Probability of having a Social Media Account",
-        xlab = "Gender",
-        ylim(c(0, 1))
         
 barplot(table.gender,
         ylab = "Probability of having a Social Media Account",
