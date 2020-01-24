@@ -101,3 +101,6 @@ barplot(table.age,
 ## Conclusion
 
 This is a test formative assignment and the mark will not count towards your final mark. If you cannot answer any of the questions above this is fine -- we are just starting this module! However, please do submit this assignment in any case to make sure that you understand the procedure, that it works correctly and you do not have any problems with summative assignments later.
+git config --global user.name 'livmasonpearson'
+
+
