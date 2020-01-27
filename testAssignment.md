@@ -1,0 +1,175 @@
+Test Statistical Assignment
+================
+Liv Mason Pearson
+24 January 2020
+
+## Introduction
+
+Please change the author and date fields above as appropriate. Do not
+change the output format. Once you have completed the assignment you
+want to knit your document into a markdown document in the
+“github\_document” format and then commit both the .Rmd and .md files
+(and all the associated files with graphs) to your private assignment
+repository on Github.
+
+## Reading data (40 points)
+
+First, we need to read the data into R. For this assignment, I ask you
+to use data from the youth self-completion questionnaire (completed by
+children between 10 and 15 years old) from Wave 9 of the Understanding
+Society. It is one of the files you have downloaded as part of SN6614
+from the UK Data Service. To help you find and understand this file you
+will need the following documents:
+
+1)  The Understanding Society Waves 1-9 User Guide:
+    <https://www.understandingsociety.ac.uk/sites/default/files/downloads/documentation/mainstage/user-guides/mainstage-user-guide.pdf>
+2)  The youth self-completion questionnaire from Wave 9:
+    <https://www.understandingsociety.ac.uk/sites/default/files/downloads/documentation/mainstage/questionnaire/wave-9/w9-gb-youth-self-completion-questionnaire.pdf>
+3)  The codebook for the file:
+    <https://www.understandingsociety.ac.uk/documentation/mainstage/dataset-documentation/datafile/youth/wave/9>
+
+<!-- end list -->
+
+``` r
+# This attaches the tidyverse package. If you get an error here you need to install the package first. 
+# You need to add between the quotation marks a full path to the required file on your computer.
+library(tidyverse)
+data <- read_tsv("/Users/LIV/Desktop/i_youth.tab")
+```
+
+## Tabulate variables (10 points)
+
+In the survey children were asked the following question: “Do you have a
+social media profile or account on any sites or apps?”. In this
+assignment we want to explore how the probability of having an account
+on social media depends on children’s age and gender.
+
+Tabulate three variables: children’s gender, age (please use derived
+variables) and having an account on social media.
+
+``` r
+# add your code here
+table(data$i_ypsocweb)
+```
+
+    ## 
+    ##   -9    1    2 
+    ##   14 2277  530
+
+``` r
+table(data$i_sex_dv)
+```
+
+    ## 
+    ##    0    1    2 
+    ##    2 1411 1408
+
+``` r
+table(data$i_age_dv)
+```
+
+    ## 
+    ##   9  10  11  12  13  14  15  16 
+    ##   1 460 496 467 463 491 434   9
+
+## Recode variables (10 points)
+
+We want to create a new binary variable for having an account on social
+media so that 1 means “yes”, 0 means “no”, and all missing values are
+coded as NA. We also want to recode gender into a new variable with the
+values “male” and “female” (this can be a character vector or a factor).
+
+``` r
+# add your code here
+data$socialmedia <- NA
+data$socialmedia[data$i_ypsocweb == 1] <- 1
+data$socialmedia[data$i_ypsocweb == 2] <- 0
+table(data$socialmedia)
+```
+
+    ## 
+    ##    0    1 
+    ##  530 2277
+
+``` r
+data$gender <- NA
+data$gender[data$i_sex_dv == 1] <- "male"
+data$gender[data$i_sex_dv == 2] <- "female"
+table(data$gender)
+```
+
+    ## 
+    ## female   male 
+    ##   1408   1411
+
+## Calculate means (10 points)
+
+Produce code that calculates probabilities of having an account on
+social media (i.e. the mean of your new binary variable produced in the
+previous problem) by age and gender.
+
+``` r
+# add your code here
+tapply(data$socialmedia, data$gender, mean, na.rm=TRUE)
+```
+
+    ##    female      male 
+    ## 0.8395150 0.7826087
+
+``` r
+tapply(data$socialmedia, data$i_age_dv, mean, na.rm=TRUE)
+```
+
+    ##         9        10        11        12        13        14        15        16 
+    ## 0.0000000 0.4868996 0.6989899 0.8655098 0.9152174 0.9468303 0.9585253 1.0000000
+
+## Write short interpretation (10 points)
+
+Write two or three sentences interpreting your findings above.
+
+I can see that with almost the exact same females and males completing
+the questionnaire, females are more likely to have a social media
+account, with 84%, compared to 78% males. In terms of age, as age
+increases per year, having a social media account becomes more likely,
+with 96% of 15 year olds having a media account, compared with 49% of
+ten year olds. I have chosen to ignore the results of age 9 and age 16,
+as the sample size for these two ages is minimal, thus I cannot draw
+valid conclusions. \#\# Visualise results (20 points)
+
+Create a statistical graph (only one, but it can be faceted)
+illustrating your results (i.e. showing how the probability of having an
+account on social media changes with age and gender). Which type of
+statistical graph would be most appropriate for this?
+
+``` r
+# add your code here
+table.gender <- tapply(data$socialmedia, data$gender, mean, na.rm=TRUE)
+table.age <- tapply(data$socialmedia, data$i_age_dv, mean, na.rm=TRUE)
+        
+barplot(table.gender,
+        ylab = "Probability of having a Social Media Account",
+        ylim = c(0,1),
+        xlab = "Gender",
+        main = "Relationship between Gender and Social Media Account Ownership",
+        col = "blue")
+```
+
+![](testAssignment_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+``` r
+barplot(table.age,
+        ylab = "Probability of having a Social Media Account",
+        xlab = "Age",
+        col = "violet")
+```
+
+![](testAssignment_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
+
+## Conclusion
+
+This is a test formative assignment and the mark will not count towards
+your final mark. If you cannot answer any of the questions above this is
+fine – we are just starting this module\! However, please do submit this
+assignment in any case to make sure that you understand the procedure,
+that it works correctly and you do not have any problems with summative
+assignments later.
